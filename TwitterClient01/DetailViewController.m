@@ -98,4 +98,52 @@
     }];
 }
 
+- (IBAction)favoriteAction:(id)sender {
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccount *account = [accountStore accountWithIdentifier:self.identifier];
+
+//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com"
+//                                       @"/1.1/favorites/create/%@.json", self.idStr]];
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com"
+                                       @"/1.1/favorites/create.json"]];
+    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                            requestMethod:SLRequestMethodPOST
+                                                      URL:url
+                                               parameters:@{@"id": self.idStr}];
+    request.account = account;
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    application.networkActivityIndicatorVisible = YES;
+    
+    [request performRequestWithHandler:^(NSData *responseData,
+                                         NSHTTPURLResponse *urlResponse,
+                                         NSError *error) {
+        if (responseData) {
+            self.httpErrorMessage = nil;
+            if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300) {
+                NSDictionary *postResponseData =
+                [NSJSONSerialization JSONObjectWithData:responseData
+                                                options:NSJSONReadingMutableContainers
+                                                  error:NULL];
+                NSLog(@"SUCCESS! Created Favorites with ID: %@", postResponseData[@"id_str"]);
+            } else { // HTTPエラー発生時
+                self.httpErrorMessage =
+                [NSString stringWithFormat:@"The response status code is %zd",
+                 urlResponse.statusCode];
+                NSLog(@"HTTP Error: %@", self.httpErrorMessage);
+                // リツイート時のHTTPエラーメッセージを画面に表示する領域がない。今後の課題。
+            }
+        } else { // リクエスト送信エラー発生時
+            NSLog(@"ERROR: An error occurred while posting: %@", [error localizedDescription]);
+            // リクエスト時の送信エラーメッセージを画面に表示する領域がない。今後の課題。
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIApplication *application = [UIApplication sharedApplication];
+            application.networkActivityIndicatorVisible = NO;
+        });
+    }];
+
+}
+
 @end
