@@ -11,9 +11,12 @@
 
 @interface TimeLineCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *tweetTextLabel;
-@property (nonatomic, strong) UILabel *nameLabel;
-@property (nonatomic, strong) UIImageView *profileImageView;
+@property UILabel *tweetTextLabel;
+@property UILabel *nameLabel;
+@property UILabel *jnameLabel;
+@property UILabel *timeLabel;
+@property UIImageView *profileImageView;
+@property UIImage *image;
 @property (nonatomic) CGFloat tweetTextLabelHeight;
 
 @end

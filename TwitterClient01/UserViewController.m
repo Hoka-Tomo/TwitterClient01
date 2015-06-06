@@ -44,7 +44,7 @@ UITableViewDelegate
     // Do any additional setup after loading the view.
     self.navigationItem.title = @"User View";
     self.profileImageView.image = self.image;
-    self.nameView.text = self.name;
+    self.nameView.text = self.screen_name;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -77,10 +77,11 @@ UITableViewDelegate
     ACAccount *account = [accountStore accountWithIdentifier:self.identifier];
     
     NSURL *url = [NSURL URLWithString:@"https://api.twitter.com"
-                  @"/1.1/statuses/home_timeline.json"];
+                  @"/1.1/statuses/user_timeline.json"];
     NSDictionary *params = @{@"count" : @"100",
                              @"trim_user" : @"0",
                              @"include_entities" : @"0"};
+    
     SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
                                             requestMethod:SLRequestMethodGET
                                                       URL:url
@@ -173,7 +174,7 @@ UITableViewDelegate
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TimeLineCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TimeLineCell"
-                                                         forIndexPath:indexPath];
+                                                         forIndexPath:indexPath]; //宣言
     
     // Configure the cell...
     

@@ -13,6 +13,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *nameView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UITextView *jnameView;
+@property (weak, nonatomic) IBOutlet UITextView *timeView;
 
 @property (nonatomic, copy) NSString *httpErrorMessage;
 
@@ -38,6 +40,8 @@
     self.navigationItem.title = @"Detail View";
     self.profileImageView.image = self.image;
     self.nameView.text = self.name;
+    self.timeView.text = self.time;
+    self.jnameView.text = self.jname;
     self.textView.text = self.text;
 
     UITapGestureRecognizer *singleFingerSingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleFingerSingleTap:)];
@@ -48,7 +52,8 @@
 - (void)handleSingleFingerSingleTap:(UITapGestureRecognizer *)recognizer //外で実行
 {
         UserViewController *userViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"UserViewController"];
-        userViewController.name = self.name;
+        userViewController.text = self.name;
+        userViewController.text = self.jname;
         userViewController.text = self.text;
         userViewController.image = self.image;
         userViewController.identifier = self.identifier;
@@ -76,6 +81,8 @@
  // Pass the selected object to the new view controller.
  }
  */
+
+// retweet 機能
 - (IBAction)retweetAction:(id)sender {
 
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
@@ -121,6 +128,8 @@
     }];
 }
 
+// Favorites 機能
+
 - (IBAction)favoriteAction:(id)sender {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccount *account = [accountStore accountWithIdentifier:self.identifier];
@@ -149,6 +158,53 @@
                 [NSJSONSerialization JSONObjectWithData:responseData
                                                 options:NSJSONReadingMutableContainers
                                                   error:NULL];
+                NSLog(@"SUCCESS! Created Favorites with ID: %@", postResponseData[@"id_str"]);
+            } else { // HTTPエラー発生時
+                self.httpErrorMessage =
+                [NSString stringWithFormat:@"The response status code is %zd",
+                 urlResponse.statusCode];
+                NSLog(@"HTTP Error: %@", self.httpErrorMessage);
+                // リツイート時のHTTPエラーメッセージを画面に表示する領域がない。今後の課題。
+            }
+        } else { // リクエスト送信エラー発生時
+            NSLog(@"ERROR: An error occurred while posting: %@", [error localizedDescription]);
+            // リクエスト時の送信エラーメッセージを画面に表示する領域がない。今後の課題。
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIApplication *application = [UIApplication sharedApplication];
+            application.networkActivityIndicatorVisible = NO;
+        });
+    }];
+
+}
+
+// Cancel Favorites 機能
+
+- (IBAction)cancelFavoAction:(id)sender {
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccount *account = [accountStore accountWithIdentifier:self.identifier];
+    NSString *urlString = [NSString stringWithFormat:@"https://api.twitter.com"
+                           @"/1.1/favorites/destroy.json"];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                            requestMethod:SLRequestMethodPOST
+                                                      URL:url
+                                               parameters:@{@"id": self.idStr}];
+    
+    [request setAccount:account];
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    application.networkActivityIndicatorVisible = YES;
+    
+    [request performRequestWithHandler:^(NSData *responseData,
+                                         NSHTTPURLResponse *urlResponse,
+                                         NSError *error){
+        if(responseData){
+            NSInteger statusCode = urlResponse.statusCode;
+            if(statusCode >= 200 && statusCode < 300){
+                NSDictionary *postResponseData =
+                [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:NULL];
                 NSLog(@"SUCCESS! Created Favorites with ID: %@", postResponseData[@"id_str"]);
             } else { // HTTPエラー発生時
                 self.httpErrorMessage =

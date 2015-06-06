@@ -8,12 +8,14 @@
 
 #import "TimeLineTableViewController.h"
 
+
 @interface TimeLineTableViewController ()
 
 @property (nonatomic) dispatch_queue_t mainQueue;
 @property (nonatomic) dispatch_queue_t imageQueue;
 @property (nonatomic, copy) NSString *httpErrorMessage;
 @property (nonatomic, copy) NSArray *timeLineData;
+//@property (nonatomic, copy) NSString *screen_name;
 
 @end
 
@@ -71,6 +73,7 @@
                                                parameters:params];
     
     request.account = account;
+    
     
     UIApplication *application = [UIApplication sharedApplication];
     application.networkActivityIndicatorVisible = YES; // インジケータON
@@ -163,6 +166,7 @@
     
     // Configure the cell...
     
+    //並列処理のために場合分けする。
     if (self.httpErrorMessage) {
         cell.tweetTextLabel.text = self.httpErrorMessage;
         cell.tweetTextLabelHeight = 24;
@@ -170,15 +174,31 @@
         cell.tweetTextLabel.text = @"Loading...";
         cell.tweetTextLabelHeight = 24;
     } else {
-        SharedDataManager *sharedManager = [SharedDataManager sharedManager];
+        //SharedDataManager *sharedManager = [SharedDataManager sharedManager];
         
-        NSString *tweetText = self.timeLineData[indexPath.row][@"text"];
-        NSAttributedString *attributedTweetText = [sharedManager attributedText:tweetText];
+        NSString *name = self.timeLineData[indexPath.row][@"user"][@"screen_name"];
+        NSString *jname = self.timeLineData[indexPath.row][@"user"][@"name"];
+        NSString *time = self.timeLineData[indexPath.row][@"created_at"];
         
-        cell.tweetTextLabel.attributedText = attributedTweetText;
-        cell.nameLabel.text = self.timeLineData[indexPath.row][@"user"][@"screen_name"];
+        /*  created_atで取得した情報を変換?格納
+         NSDateFormatter* inFormat = [[NSDateFormatter alloc] init];
+         NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+         [inFormat setLocale:locale];
+         [inFormat setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss Z"];
+         NSDate *dateline = [inFormat dateFromString:time];
+         */
+        
+        NSString *text = [[self.timeLineData objectAtIndex:indexPath.row]objectForKey:@"text"];
+
+        cell.tweetTextLabelHeight = [self labelHeight:text];
+        cell.tweetTextLabel.text = text;
+
+        //cell.nameLabel.text = self.timeLineData[indexPath.row][@"user"][@"screen_name"]; //userの中のscreen_name
+        cell.nameLabel.text = name;
+        cell.jnameLabel.text = jname;
+        cell.timeLabel.text = time;
         cell.profileImageView.image = [UIImage imageNamed:@"blank.png"];
-        cell.tweetTextLabelHeight = [sharedManager tweetTextLabelHeight:attributedTweetText];
+        //cell.tweetTextLabelHeight = [sharedManager tweetTextLabelHeight:attributedTweetText];
         
         UIApplication *application = [UIApplication sharedApplication];
         application.networkActivityIndicatorVisible = YES;
@@ -204,8 +224,32 @@
             });
         });
     }
+    
     return cell;
+    
 }
+
+-(CGFloat)labelHeight:(NSString *)labelText{
+    //ラベルの行間設定
+    UILabel *aLabel = [[UILabel alloc] init];
+    CGFloat lineHeight = 18.0;
+    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+    paragrahStyle.minimumLineHeight = lineHeight;
+    paragrahStyle.maximumLineHeight = lineHeight;
+    
+    //テキスト属性を付与
+    NSString *text = (labelText == nil) ? @"" : labelText;
+    UIFont *font = [UIFont fontWithName:@"HiraKakuProN-W3" size:14];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragrahStyle,
+                                 NSFontAttributeName: font};
+    NSAttributedString *aText = [[NSAttributedString alloc]initWithString:text attributes:attributes];
+    aLabel.attributedText = aText;
+    
+    //ラベルの高さを計算
+    CGFloat aHeight = [aLabel.attributedText boundingRectWithSize:CGSizeMake(257, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size.height;
+    return aHeight;
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -273,6 +317,8 @@
     
     DetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
     detailViewController.name = cell.nameLabel.text;
+    detailViewController.jname = cell.jnameLabel.text;
+    detailViewController.time = cell.timeLabel.text;
     detailViewController.text = cell.tweetTextLabel.text;
     detailViewController.image = cell.profileImageView.image;
     detailViewController.identifier = self.identifier;

@@ -12,6 +12,7 @@
 
 @interface UserViewController : UIViewController
 
+@property (nonatomic, copy) NSString *screen_name;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, strong) UIImage *image;
