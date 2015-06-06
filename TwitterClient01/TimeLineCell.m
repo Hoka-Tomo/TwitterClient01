@@ -28,7 +28,7 @@
         _nameLabel.font = sharedManager.nameLabelFont;
         _nameLabel.textColor = [UIColor blackColor];
         [self.contentView addSubview:_nameLabel];
-        
+    
         _profileImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self.contentView addSubview:_profileImageView];
     }
@@ -55,12 +55,18 @@
     tweetTextLabelX = sharedManager.tweetTextLabelX;
     nameLabelY = sharedManager.nameLabelY;
     
-    self.profileImageView.frame
-    = CGRectMake(x1, y1, imageX, imageY);
-    self.tweetTextLabel.frame
-    = CGRectMake(x1 + imageX + x2, y1, tweetTextLabelX, self.tweetTextLabelHeight);
-    self.nameLabel.frame
-    = CGRectMake(x1 + imageX + x2, y1 + self.tweetTextLabelHeight + y2, tweetTextLabelX, nameLabelY);
+    self.profileImageView.frame = CGRectMake(10, 10, imageX, imageY);
+    
+    self.nameLabel.frame = CGRectMake(self.profileImageView.frame.origin.x + self.profileImageView.frame.size.width + 10,
+                                      10, tweetTextLabelX, nameLabelY);
+    
+    self.tweetTextLabel.frame = CGRectMake(self.nameLabel.frame.origin.x,
+                                           self.nameLabel.frame.origin.y + 10,
+                                           tweetTextLabelX, self.tweetTextLabelHeight);
+
+    
+    
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

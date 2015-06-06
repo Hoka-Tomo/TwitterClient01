@@ -40,7 +40,7 @@
         _marginY3 = 5;
         
         _tweetTextLabelFont = [UIFont fontWithName:@"HiraKakuProN-W3" size:13];
-        _nameLabelFont = [UIFont systemFontOfSize:12.0];
+        _nameLabelFont = [UIFont boldSystemFontOfSize:14];
         _tweetTextLabelLineHeight = _tweetTextLabelFont.lineHeight * 1.5f;
         
         _imageX = 48;

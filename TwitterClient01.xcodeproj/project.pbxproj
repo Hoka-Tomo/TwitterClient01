@@ -13,6 +13,7 @@
 		F603E30F1B18181E00BAE3E3 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F603E30E1B18181E00BAE3E3 /* WebViewController.m */; };
 		F603E3121B182D1500BAE3E3 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F603E3111B182D1500BAE3E3 /* DetailViewController.m */; };
 		F603E3141B1838A300BAE3E3 /* bird.png in Resources */ = {isa = PBXBuildFile; fileRef = F603E3131B1838A300BAE3E3 /* bird.png */; };
+		F603E3171B22D69C00BAE3E3 /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F603E3161B22D69C00BAE3E3 /* UserViewController.m */; };
 		F68341261B075929003E1978 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F68341251B075929003E1978 /* main.m */; };
 		F68341291B075929003E1978 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F68341281B075929003E1978 /* AppDelegate.m */; };
 		F683412C1B075929003E1978 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F683412B1B075929003E1978 /* ViewController.m */; };
@@ -46,6 +47,8 @@
 		F603E3101B182D1500BAE3E3 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		F603E3111B182D1500BAE3E3 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		F603E3131B1838A300BAE3E3 /* bird.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird.png; sourceTree = "<group>"; };
+		F603E3151B22D69C00BAE3E3 /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
+		F603E3161B22D69C00BAE3E3 /* UserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewController.m; sourceTree = "<group>"; };
 		F68341201B075929003E1978 /* TwitterClient01.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient01.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68341241B075929003E1978 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F68341251B075929003E1978 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -127,6 +130,8 @@
 				F603E30E1B18181E00BAE3E3 /* WebViewController.m */,
 				F603E3101B182D1500BAE3E3 /* DetailViewController.h */,
 				F603E3111B182D1500BAE3E3 /* DetailViewController.m */,
+				F603E3151B22D69C00BAE3E3 /* UserViewController.h */,
+				F603E3161B22D69C00BAE3E3 /* UserViewController.m */,
 			);
 			path = TwitterClient01;
 			sourceTree = "<group>";
@@ -265,6 +270,7 @@
 				F603E30F1B18181E00BAE3E3 /* WebViewController.m in Sources */,
 				F603E3121B182D1500BAE3E3 /* DetailViewController.m in Sources */,
 				F603E30C1B18163D00BAE3E3 /* MyUIApplication.m in Sources */,
+				F603E3171B22D69C00BAE3E3 /* UserViewController.m in Sources */,
 				F68341291B075929003E1978 /* AppDelegate.m in Sources */,
 				F6B157FA1B0B10060014C813 /* TimeLineTableViewController.m in Sources */,
 				F68341261B075929003E1978 /* main.m in Sources */,

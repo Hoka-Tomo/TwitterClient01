@@ -7,6 +7,7 @@
 //
 
 #import "DetailViewController.h"
+#import "UserViewController.h"
 
 @interface DetailViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *nameView;
@@ -14,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 
 @property (nonatomic, copy) NSString *httpErrorMessage;
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end
 
@@ -36,7 +39,27 @@
     self.profileImageView.image = self.image;
     self.nameView.text = self.name;
     self.textView.text = self.text;
+
+    UITapGestureRecognizer *singleFingerSingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleFingerSingleTap:)];
+    [self.nameView addGestureRecognizer:singleFingerSingleTap];
+    
 }
+
+- (void)handleSingleFingerSingleTap:(UITapGestureRecognizer *)recognizer //外で実行
+{
+        UserViewController *userViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"UserViewController"];
+        userViewController.name = self.name;
+        userViewController.text = self.text;
+        userViewController.image = self.image;
+        userViewController.identifier = self.identifier;
+        //userViewController.idStr = self.timeLineData[indexPath.row][@"id_str"];
+    
+        [self.navigationController pushViewController:userViewController animated:YES];
+
+    
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -110,7 +133,7 @@
     SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
                                             requestMethod:SLRequestMethodPOST
                                                       URL:url
-                                               parameters:@{@"id": self.idStr}];
+                                               parameters:@{@"id": self.idStr}]; //parameter のここを修正。
     request.account = account;
     
     UIApplication *application = [UIApplication sharedApplication];
