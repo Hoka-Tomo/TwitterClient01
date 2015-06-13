@@ -9,6 +9,7 @@
 #import "DetailViewController.h"
 #import "UserViewController.h"
 
+
 @interface DetailViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *nameView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -40,10 +41,11 @@
     self.navigationItem.title = @"Detail View";
     self.profileImageView.image = self.image;
     self.nameView.text = self.name;
-    self.timeView.text = self.time;
     self.jnameView.text = self.jname;
+    self.timeView.text = self.time;
     self.textView.text = self.text;
-
+    
+    // ラベル(nameView)にタップするとアクションを起こせる機能をつけた。
     UITapGestureRecognizer *singleFingerSingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleFingerSingleTap:)];
     [self.nameView addGestureRecognizer:singleFingerSingleTap];
     
@@ -52,7 +54,7 @@
 - (void)handleSingleFingerSingleTap:(UITapGestureRecognizer *)recognizer //外で実行
 {
         UserViewController *userViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"UserViewController"];
-        userViewController.text = self.name;
+        userViewController.name = self.name;
         userViewController.text = self.jname;
         userViewController.text = self.text;
         userViewController.image = self.image;
@@ -60,7 +62,7 @@
         //userViewController.idStr = self.timeLineData[indexPath.row][@"id_str"];
     
         [self.navigationController pushViewController:userViewController animated:YES];
-
+    
     
     
 }

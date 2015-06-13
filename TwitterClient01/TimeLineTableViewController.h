@@ -17,6 +17,6 @@
 @interface TimeLineTableViewController : UITableViewController
 
 @property (nonatomic, copy) NSString *identifier;
-@property (nonatomic, copy) NSString *text;
+//@property (nonatomic, copy) NSString *text;
 
 @end

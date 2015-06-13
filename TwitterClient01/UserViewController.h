@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
+#import "DetailViewController.h"
+#import "TimeLineCell.h"
 
 @interface UserViewController : UIViewController
 
 @property (nonatomic, copy) NSString *screen_name;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *jname;
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, copy) NSString *identifier;

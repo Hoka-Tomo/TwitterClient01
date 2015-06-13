@@ -105,6 +105,8 @@
     }
 }
 
+
+// タイムライン表示 アカウント情報引き継ぎ
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"TimeLineSegue"]) {
